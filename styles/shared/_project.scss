@@ -1,3 +1,17 @@
 /**
  * Project specific styling.
  */
+
+ul {
+  @include font-styles("poynter-serif");
+
+  list-style-type: disc;
+}
+
+.article-footer {
+  margin-bottom: 5em;
+}
+
+pre {
+  white-space: pre-wrap;
+}

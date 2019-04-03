@@ -1,8 +1,180 @@
 
 <div class="strib-styles ssa ssb ssc">
-  <section class="container-lg">
+  <section>
+    <div class="hero container-lg">
+      <h1>Svelte at the Star Tribune</h1>
 
+      <p class="lead container-sm">From simple templating to interactive components.</p>
 
+      <div class="byline">
+        <address>By
+          <a rel="author" href="http://example.com/author">Alan Palazzolo</a>
+        </address>
+        <span class="spacer"></span>
+        Star Tribune
+        <span class="spacer-alt"></span>
+        <time pubdate datetime="2019-04-04T12:00:00">April 4, 2019 &mdash; 12:00pm</time>
+      </div>
+    </div>
+
+    <div class="container-copy">
+      <p><a href="https://svelte.technology/">Svelte</a> is a JS framework for building interactive applications, much like React, Vue, or Ember.  To me, it fits the newsroom well because it is overall simple, the syntax aims to stay close to regular HTML and JS, and it's small and performat.  One of the big differences of Svelte is that it requires a <strong>compile</strong> step.  This actually means that a compiled Svelte component can run anywhere without any library dependencies.</p>
+
+      <p>Some helpful links up front:</p>
+
+      <ul>
+        <li>The Svelte <a href="https://svelte.technology/guide">guide</a> which explains every part of Svelte in one page.</li>
+        <li>The Svelte <a href="https://svelte.technology/repl">REPL</a> (playground) to test out some Svelte without installing anything.</li>
+      </ul>
+
+      <h2>Svelte in a Striblab project</h2>
+
+      <p>The <a href="https://github.com/striblab/generator-striblab">generator-striblab</a> project template doesn't use Svelte in any custom way but assumes a specific structure.  All Svelte templates are in <code>templates/</code> directory where top-level files without a leading <code>_</code> are compiled into full HTML pages, and files with a leading <code>_</code> are assumed to be included componented.  We also use the extension <code>.svelte.html</code> since syntax highlighters are a bit off with Svelte syntax.</p>
+
+      <p>By default, the main point of entry for content is:</p>
+
+      <pre><code>templates/_index-content.svelte.html</code></pre>
+
+      <p>We get "server"-side <strong>data</strong> into our template with <a href="https://www.npmjs.com/package/air-supply">air-supply</a>, which is configured in the <code>air-supply.config.js</code> file.</p>
+
+      <p>If we need "interactivity" in the client where we would want to use events, we can then re-load the Svelte component in the browser.  This will be managed in the application Javascript, which will by default be at <code>app/index.js</code>.  It's important to note that data will need to be managed separately for the client, but air-supply will help make that easier.</p>
+
+      <p>Let's get more in the weeds</p>
+
+      <h2>Just HTML</h2>
+
+      <p>If you look at the default contents of <code>templates/_index-content.svelte.html</code>, it's basically just HTML.  Svelte starts from just HTML then adds features.  So, if you don't have any data to use in templates or need for interactivity, there's no change in syntax.</p>
+
+      <p>We can add a bit of Svelte syntax and import some other HTML, which might be helpful.  First we create a new component, <code>templates/shared/_just-html.svelte.html</code></p>
+
+      <pre><code>&lt;p&gt;This is just some HTML stored in a component.  Easy.&lt;/p&gt;</code></pre>
+
+      <p>Then in our main content template we include it by importing, registering, then using.</p>
+
+      <pre><code>&lt;aside&gt;&lt;JustHTML /&gt;&lt;/aside&gt;
+
+&lt;script&gt;
+  import JustHTML from "./shared/_just-html.svelte.html";
+
+  export default &#123;
+    components: &#123;
+      JustHTML
+    &#125;
+  &#125;;
+&lt;/script&gt;</code></pre>
+
+      <p>Example:</p>
+
+      <aside>
+        <JustHTML />
+      </aside>
+
+      <h2>The Svelte-ness</h2>
+
+      <p>The last example above, you'll notice that we did a bit more than HTML.  We added the <code>script</code> block which is regular HTML, but Svelte treats that special.  We also, used our custom component as an HTML element.</p>
+
+      <p>The next big thing is to add data.  A component can have default data, so we will add that first.<p>
+
+      <pre><code>&lt;p&gt;&#123; defaultDataValue &#125;&lt;/p&gt;
+
+&lt;script&gt;
+  export default &#123;
+    data() &#123;
+      return &#123;
+          defaultDataValue: 'Hello, data-filled world'
+      &#125;;
+    &#125;
+  &#125;;
+&lt;/script&gt;</code></pre>
+
+      <p>And here is the value: <strong>{ defaultDataValue }</strong></p>
+
+      <h3>More data</h3>
+
+      <p>Let's use air-supply to pull in some <a href="https://docs.google.com/spreadsheets/d/1NPD4EWY7u4FOFzrz3eeAekNBXO-UNOCW-JKhhJg8qeg/edit#gid=0">Google Spreadsheet data</a> and display it in a table.</p>
+
+      <p>We add the package in <code>air-supply.config.js</code>.</p>
+
+      <pre><code>packages: &#123;
+  lakes: &#123;
+    source:
+      'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOqHLik68qD7cVdI-qXGFlkrktztx5lvkJK_BPbKlXy71TzCGlZTRAxBo0ZPSW38udLcEWmSA3E-OX/pub?output=csv',
+    output: 'assets/data/lakes.json'
+  &#125;
+&#125;</code></pre>
+
+      <p>This gives use the <code>lakes</code> variable to use in our template.  We use the <code>output</code> property to output the parsed data locally, which we will use when we get into the client side of things.  Note that this process is specific to our project.</p>
+
+      <p>We can then use an <a href="https://svelte.technology/guide#each-blocks">each block</a> to make a table of that data.</p>
+
+      <pre><code>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;Lake&lt;/th&gt; &lt;th&gt;County&lt;/th&gt;&lt;/tr&gt;
+  &lt;/thead&gt;
+
+  &lt;tbody&gt;
+    &#123;#each lakes as lake, li (lake.id)&#125;
+      &lt;tr&gt;
+        &lt;td&gt;&#123; lake.Lake &#125;&lt;/td&gt;
+        &lt;td&gt;&#123; lake.County &#125;&lt;/td&gt;
+      &lt;/tr&gt;
+    &#123;/each&#125;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
+      <p>And here is the output:</p>
+
+      <table>
+        <thead>
+          <tr><th>Lake</th> <th>County</th></tr>
+        </thead>
+
+        <tbody>
+          {#each lakes as lake, li (lake.id)}
+            <tr>
+              <td>{ lake.Lake }</td>
+              <td>{ lake.County }</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+
+      <h2>Into the client</h2>
+
+      <p>So far, the page is actually just a static HTML page.  We use Svelte to compile a Svelte component, then use our data to render HTML.</p>
+
+      <p>But, if we want to use interactivity like handling clicks or other things, then we need to compile the component and use it in the client.  Luckily, the project already does a lot of the work for us.</p>
+
+      <p>In <code>app/index.js</code> we need to add the following.</p>
+
+      <pre><code>// Dependencies
+import utils from './shared/utils.js';
+import Content from '../templates/_index-content.svelte.html';
+import lakes from '../assets/data/lakes.json';
+
+// Make sure DOM is loaded
+utils.documentReady(() => &#123;
+  const app = new Content(&#123;
+    target: document.querySelector('.article-lcd-body-content'),
+    hydrate: true,
+    data: &#123;
+      lakes
+    &#125;
+  &#125;);
+&#125;);</code></pre>
+
+      <p>Note the double-load change.</p>
+    </div>
+
+    <div class="container-copy">
+      <footer class="article-footer">
+        <div class="byline">
+          <address>
+            <a rel="author" href="mailto:alan.palazzolo@startribune.com">alan.palazzolo@startribune.com</a>
+          </address>
+        </div>
+      </footer>
+    </div>
   </section>
 </div>
 
@@ -10,19 +182,19 @@
 
 
 <script>
+  import JustHTML from "./shared/_just-html.svelte.html";
+
   export default {
-    oncreate() {
-      // For content that lives in the CMS directly, we hack
-      // around the share bits by removing it before we load
-      // the component, then re-attach here.
-      //
-      // This looks like
-      // <div class="share-placeholder">
-      //   <!-- share -->
-      // </div>
-      if (this.get().attachShare) {
-        this.get().attachShare();
-      }
+    components: {
+      JustHTML
+    },
+
+    oncreate() {},
+
+    data() {
+      return {
+        defaultDataValue: "Hello, data-filled world"
+      };
     }
   };
 </script>

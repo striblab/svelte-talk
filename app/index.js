@@ -10,12 +10,9 @@
 // /* global $, _ */
 
 // Dependencies
-import { environmentNoting, autoEnablePym, detachAndAttachElement, } from './shared/utils.js';
-
-// Mark page with note about development or staging
-environmentNoting();
-
-
+import utils from './shared/utils.js';
+import Content from '../templates/_index-content.svelte.html';
+import lakes from '../assets/data/lakes.json';
 
 /**
  * Adding dependencies
@@ -26,7 +23,6 @@ environmentNoting();
  * Or import libraries installed with npm like this:
  * import module from 'module';
  */
-
 
 /**
  * Adding Svelte templates in the client
@@ -60,23 +56,16 @@ environmentNoting();
  * });
  */
 
+utils.documentReady(() => {
+  // Mark page with note about development or staging
+  utils.environmentNoting();
 
-
-// Common code to get svelte template loaded on the client and hack-ishly
-// handle sharing
-//
-// import Content from '../templates/_index-content.svelte.html
-//
-// // Deal with share place holder (remove the elements, then re-attach
-// // them in the app component)
-// const attachShare = detachAndAttachElement('.share-placeholder');
-//
-// // Main component
-// const app = new Content({
-//   target: document.querySelector('.article-lcd-body-content'),
-//   hydrate: true,
-//   data: {
-//     attachShare
-//   }
-// });
-
+  // Main component
+  const app = new Content({
+    target: document.querySelector('.article-lcd-body-content'),
+    hydrate: true,
+    data: {
+      lakes
+    }
+  });
+});

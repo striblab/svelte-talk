@@ -27,6 +27,12 @@ module.exports = {
     argv: {
       source: argv,
       type: 'data'
+    },
+
+    lakes: {
+      source:
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOqHLik68qD7cVdI-qXGFlkrktztx5lvkJK_BPbKlXy71TzCGlZTRAxBo0ZPSW38udLcEWmSA3E-OX/pub?output=csv',
+      output: 'assets/data/lakes.json'
     }
 
     // Example external data source
