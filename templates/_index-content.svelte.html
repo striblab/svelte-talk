@@ -45,7 +45,7 @@
 
       <p>If you look at the default contents of <code>templates/_index-content.svelte.html</code>, it's basically just HTML.  Svelte starts from just HTML then adds features.  So, if you don't have any data to use in templates or need for interactivity, there's no change in syntax.</p>
 
-      <p>We can add a bit of Svelte syntax and import some other HTML, which might be helpful.  First we create a new component, <code>templates/shared/_just-html.svelte.html</code></p>
+      <p>We can add a bit of Svelte syntax and import some other HTML, which might be helpful.  First we create a new component, <code>templates/shared/_example-just-html.svelte.html</code></p>
 
       <pre><code>&lt;p&gt;This is just some HTML stored in a component.  Easy.&lt;/p&gt;</code></pre>
 
@@ -54,7 +54,7 @@
       <pre><code>&lt;aside&gt;&lt;JustHTML /&gt;&lt;/aside&gt;
 
 &lt;script&gt;
-  import JustHTML from "./shared/_just-html.svelte.html";
+  import JustHTML from "./shared/_example-just-html.svelte.html";
 
   export default &#123;
     components: &#123;
@@ -163,7 +163,87 @@ utils.documentReady(() => &#123;
   &#125;);
 &#125;);</code></pre>
 
-      <p>Note the double-load change.</p>
+      <p>You'll now notice that nothing has changed, which is kind of boring.  But this sets us up to do so much more.  From here on out, we will keep our examples in components and just link to that code.</p>
+
+      <p>Sidenote: the double-load change when editing; the initially loaded HTML will change when that gets built, but the client-side JS is still built with the old version, so it will override it.  Then, the client-side JS will get built and come back and the new changes will show.  Not a big deal, just nice to understand what is going.</p>
+
+      <h2>Ch-ch-changes</h2>
+
+      <p>A framework like Svelte makes it so easy to have a value change, and have the interface update with those changes.  Here's a simple component that has a button that counts.</p>
+
+      <Counter />
+
+      <h3>Binding</h3>
+
+      <p>For inputs, where we want a value to keep in-sync with input from a user, Svelte has a concept called <a href="https://svelte.technology/guide#bindings">binding</a>.  The example below shows how we can use a attribute on an <code>input</code> element to keep that value in sync even if it changes from multiple sources.</p>
+
+      <SimpleForm />
+
+      <p>There are more built-in bindings that just inputs.</p>
+
+      <ElementBindings />
+
+      <h2>Passing values around</h2>
+
+      <p>Components are a really powerful way to split up code, but we can also use them in a more connected way by passing values to them and binding values as well.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>A string</th>
+            <th>A value</th>
+            <th>A value that changes</th>
+            <th>A binding</th>
+          </tr>
+
+          <tr>
+            <th><code>stringValue</code></th>
+            <th><code>dataValue</code></th>
+            <th><code>dataValueChanges</code></th>
+            <th><code>bindValue</code></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>"String"</td>
+            <td>{ dataValue }</td>
+            <td>{ dataValueChanges }</td>
+            <td>{ bindValue }</td>
+          </tr>
+
+          <ComponentValues
+            stringValue="Not from a value"
+            dataValue="{ dataValue }"
+            dataValueChanges="{ dataValueChanges }"
+            bind:bindValue="bindValue"
+          />
+        </tbody>
+      </table>
+
+      <h2>Element references</h2>
+
+      <p>Sometimes, we just want to reference a DOM element and use it in some way.  Svelte calls these <a href="https://svelte.technology/guide#refs">refs</a>.</p>
+
+      <ElementRefs />
+
+      <h2>Other libraries</h2>
+
+      <p>Refs also make working with outside libraries, such as jQuery plugins or mapping, easier.  Here's an example Mapbox GL map.</p>
+
+      <Mapbox />
+
+      <h2>Transitions</h2>
+
+      <p>Svelte's <a href="https://svelte.technology/guide#transitions">transitions</a> handle animating elements as they change due to data (or state) updates.  We can build our own or use packages like <a href="https://github.com/sveltejs/svelte-transitions">svelte-transitions</a>.</p>
+
+      <Transitions />
+
+      <h2>The API</h2>
+
+      <p>Let's make that lake table sortable.</p>
+
+      <SortableLakes lakes="{ lakes }" />
     </div>
 
     <div class="container-copy">
@@ -182,18 +262,37 @@ utils.documentReady(() => &#123;
 
 
 <script>
-  import JustHTML from "./shared/_just-html.svelte.html";
+  import JustHTML from "./shared/_example-just-html.svelte.html";
+  import Counter from "./shared/_example-counter.svelte.html";
+  import SimpleForm from "./shared/_example-simple-forms.svelte.html";
+  import ComponentValues from "./shared/_example-component-values.svelte.html";
+  import ElementBindings from "./shared/_example-element-bindings.svelte.html";
+  import ElementRefs from "./shared/_example-element-refs.svelte.html";
+  import Mapbox from "./shared/_example-mapbox.svelte.html";
+  import Transitions from "./shared/_example-transitions.svelte.html";
+  import SortableLakes from "./shared/_example-sortable-lakes.svelte.html";
 
   export default {
     components: {
-      JustHTML
+      JustHTML,
+      Counter,
+      SimpleForm,
+      ComponentValues,
+      ElementBindings,
+      ElementRefs,
+      Mapbox,
+      Transitions,
+      SortableLakes
     },
 
     oncreate() {},
 
     data() {
       return {
-        defaultDataValue: "Hello, data-filled world"
+        defaultDataValue: "Hello, data-filled world",
+        dataValue: 99,
+        dataValueChanges: 999,
+        bindValue: 9999
       };
     }
   };

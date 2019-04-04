@@ -1,0 +1,46 @@
+<table>
+  <thead>
+    <tr>
+      <th>Lake</th>
+      <th><a href="#sort-count" on:click|preventDefault="set({ sort: 'County' })">County</a></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {#each sortedLakes as lake, li (lake.id)}
+      <tr>
+        <td>{ lake.Lake }</td>
+        <td>{ lake.County }</td>
+      </tr>
+    {/each}
+  </tbody>
+</table>
+
+<script>
+  export default {
+    computed: {
+      sortedLakes({ lakes, sort }) {
+        if (!lakes || !lakes.length) {
+          return [];
+        }
+
+        return lakes.sort((a, b) => {
+          if (a[sort] < b[sort]) {
+            return -1;
+          }
+          if (a[sort] > b[sort]) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+    },
+
+    data() {
+      return {
+        lakes: [],
+        sort: "Lake"
+      };
+    }
+  };
+</script>

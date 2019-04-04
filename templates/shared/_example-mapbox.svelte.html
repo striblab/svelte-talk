@@ -1,0 +1,27 @@
+<div class="example example-map" ref:map></div>
+
+<script>
+  export default {
+    oncreate() {
+      let { token, center, styles } = this.get();
+
+      // Set access token
+      mapboxgl.accessToken = token;
+      this.__map = new mapboxgl.Map({
+        container: this.refs.map,
+        style: styles,
+        center: center,
+        zoom: 9
+      });
+    },
+
+    data() {
+      return {
+        token:
+          "pk.eyJ1Ijoic2hhZG93ZmxhcmUiLCJhIjoiODRHdjBSWSJ9.lF4ymp-69zdGvZ5X4Tokzg",
+        styles: "mapbox://styles/shadowflare/cjfljh7oh6v6k2smuvb3jftac",
+        center: [-93.191872, 44.960911]
+      };
+    }
+  };
+</script>

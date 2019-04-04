@@ -1,0 +1,17 @@
+<div class="example">
+  <canvas ref:canvas width="500" height="300"></canvas>
+</div>
+
+
+<script>
+  export default {
+    oncreate() {
+      const canvas = this.refs.canvas;
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillRect(25, 25, 100, 100);
+      ctx.clearRect(45, 45, 60, 60);
+      ctx.strokeRect(50, 50, 50, 50);
+    }
+  };
+</script>

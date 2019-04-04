@@ -11,26 +11,25 @@
   "cms": {
     "defaultArticleContentTemplateRewriteClass": "article-lcd-body-content",
     "pages": [
-      
       {
         "id": "index",
         "articleId": "NEEDS-ARTICLE-ID",
         "lcd": "NEEDS-LCD-ID",
         "default": true
       }
-      
     ]
   },
 
-
   "styles": {
     "globals": [
+      "https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css"
     ]
   },
   "js": {
     "globals": [
       "https://cdn.polyfill.io/v2/polyfill.min.js",
-      "https://static.startribune.com/assets/libs/pym.js/1.3.2/pym.v1.min.js"
+      "https://static.startribune.com/assets/libs/pym.js/1.3.2/pym.v1.min.js",
+      "https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js"
     ]
   },
   "publishToken": "0cc65fb9e45badd60d0314587ddbbe00",

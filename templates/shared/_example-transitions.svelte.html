@@ -1,0 +1,29 @@
+<div class="example">
+
+  <div class="check-list">
+    <div class="check">
+      <input type="checkbox" id="input-example-visible" name="input-example-visible" bind:checked="visible">
+      <label for="input-example-12a">Visible</label>
+    </div>
+  </div>
+
+  {#if visible}
+    <div class="example-color" in:fly="{ y: 50 }" out:fade>
+      flies up, fades out
+    </div>
+  {/if}
+</div>
+
+<script>
+  import { fade, fly } from "svelte-transitions";
+
+  export default {
+    transitions: { fade, fly },
+
+    data() {
+      return {
+        visible: true
+      };
+    }
+  };
+</script>

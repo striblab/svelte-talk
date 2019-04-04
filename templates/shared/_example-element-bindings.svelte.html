@@ -1,0 +1,22 @@
+<svelte:window bind:scrollX="scrollX" bind:scrollY="scrollY" />
+
+<div class="example">
+  <p>Uses <code>bind:clientWidth</code> and <code>bind:clientHeight</code> to update a value</p>
+  <div class="example-block" bind:clientWidth="blockWidth" bind:clientHeight="blockHeight" style="width: { blockStyleWidth || 100 }%;">
+    { blockWidth } x { blockHeight }
+  </div>
+
+  <p>There is a special <code>&lt;svelte:window&gt;</code> element that we can attach window-level events to:</p>
+  <p>Scroll: <kbd>{ scrollX }, { scrollY }</kbd></p>
+</div>
+
+
+<script>
+  export default {
+    oncreate() {
+      setInterval(() => {
+        this.set({ blockStyleWidth: Math.random() * 50 + 50 });
+      }, 2000);
+    }
+  };
+</script>

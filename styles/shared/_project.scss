@@ -15,3 +15,28 @@ ul {
 pre {
   white-space: pre-wrap;
 }
+
+.example {
+  background-color: map-get($grays, "lighter");
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.example-block {
+  min-width: 5em;
+  padding: 1em;
+  background-color: map-get($grays, "dark");
+  color: $color-white;
+  margin: 0 auto 1em;
+}
+
+.example-map {
+  min-height: 20em;
+  padding: 0;
+}
+
+.example-color {
+  background-color: map-get($theme, "red-dark");
+  color: $color-white;
+  padding: 0.5em;
+}

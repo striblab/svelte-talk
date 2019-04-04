@@ -1,0 +1,26 @@
+<div class="example example-counter">
+  <form class="form-compact" on:submit="event.preventDefault()">
+    <div class="form-item">
+      <label class="sr-only" for="input-example">Input label</label>
+      <input id="input-example" type="text" placeholder="Type here" bind:value="inputValue">
+    </div>
+
+    <div class="form-item">
+      <button on:click|preventDefault="set({ inputValue: `Random value ${Math.random().toFixed(3)}`})">Random</button>
+    </div>
+  </form>
+
+  <div>
+    Input value: <kbd>{ inputValue ? inputValue : '' }</kbd>
+  </div>
+</div>
+
+<script>
+  export default {
+    data() {
+      return {
+        inputValue: ""
+      };
+    }
+  };
+</script>
