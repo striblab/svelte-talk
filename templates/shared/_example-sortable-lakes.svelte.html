@@ -1,8 +1,8 @@
 <table>
   <thead>
     <tr>
-      <th>Lake</th>
-      <th><a href="#sort-count" on:click|preventDefault="set({ sort: 'County' })">County</a></th>
+      <th><a href="#sort-lake" on:click|preventDefault="set({ sort: 'Lake' })">Lake</a></th>
+      <th><a href="#sort-county" on:click|preventDefault="set({ sort: 'County' })">County</a></th>
     </tr>
   </thead>
 
@@ -24,7 +24,8 @@
           return [];
         }
 
-        return lakes.sort((a, b) => {
+        let copy = lakes.map(a => a);
+        return copy.sort((a, b) => {
           if (a[sort] < b[sort]) {
             return -1;
           }
